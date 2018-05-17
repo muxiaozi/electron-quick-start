@@ -13,7 +13,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800, height: 600, frame: false})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -21,6 +21,16 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
+
+  // add maximize event listener
+  const ipcMain = electron.ipcMain
+  ipcMain.on('maximize', () => {
+    if(mainWindow.isMaximized()){
+      mainWindow.restore()
+    }else{
+      mainWindow.maximize()
+    }
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
